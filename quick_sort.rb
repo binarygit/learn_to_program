@@ -3,31 +3,21 @@ require 'pry-byebug'
 
 def quicksort(array)
   return [] if array.empty?
+  return array if array.length == 1
 
-  
-  pivot = array[0]
-  num_of_pivot = 0
-
-  if array.length == 1
-    return array
-  else
-    less_than_pivot = []
-    more_than_pivot = []
-    array.each do |item|
-      (num_of_pivot += 1; next) if item == pivot
-      less_than_pivot << item if item < pivot
-      more_than_pivot << item if item > pivot
-    end
-    less_than_pivot = quicksort(less_than_pivot)
-    more_than_pivot = quicksort(more_than_pivot)
+  pivot = array.pop
+  less_than_pivot = []
+  more_than_pivot = []
+  array.each do |item|
+    less_than_pivot << item if item <= pivot
+    more_than_pivot << item if item > pivot
   end
+  less_than_pivot = quicksort(less_than_pivot)
+  more_than_pivot = quicksort(more_than_pivot)
 
-  # creates pivot array 
-  # with the number of pivots
-  # found in the original array
-  pivot = Array.new(num_of_pivot, pivot)
-  less_than_pivot + pivot + more_than_pivot
+  less_than_pivot + [pivot] + more_than_pivot
 end
 
 array = Array.new(5) { rand(1..5) }
-quicksort(array) 
+p array
+p quicksort(array)
